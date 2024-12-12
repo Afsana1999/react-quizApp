@@ -11,35 +11,43 @@ const Question: React.FC = () => {
   const [result, setResult] = useState<number>(0);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
-  const handleClick = (options: string):void => {
+  const handleClick = (options: string): void => {
     if (options === currentQuestion.correctAnswer) {
       setResult((prev) => prev + 1);
     }
     GetNextQuestion();
   };
 
-  const GetNextQuestion = ():void => {
+  const GetNextQuestion = (): void => {
     const nextQuestionId = currentQuestionId + 1;
     const nextQuestionFind = question.find((q) => q.id === nextQuestionId);
 
     if (nextQuestionFind) {
       setCurrentQuestionId(nextQuestionFind.id);
+    } else {
+      setCurrentQuestionId(-1);
     }
   };
 
-  if (currentQuestionId >= question.length) {
+  if (currentQuestionId === -1) {
     return (
-      <div style={{alignContent:"center",textAlign:"center",fontSize:"25px"}}>
-        <div>Quiz bitdi, ugurlaarrr</div> 
-        <p>Neticeniz: {result}</p>
+      <div
+        style={{
+          alignContent: "center",
+          textAlign: "center",
+          fontSize: "25px",
+        }}
+      >
+        <div>Quiz bitdi, ugurlaarrr</div>
+        <p>Duzgun cavablar: {result}</p>
       </div>
     );
   }
 
   return (
     <div>
-      <h1 style={{textAlign:"center"}}>{currentQuestion.question}</h1>
-      <ul className="lists" style={{ listStyleType: "none" }}>
+      <h1 style={{ textAlign: "center" }}>{currentQuestion.question}</h1>
+      <ul style={{ listStyleType: "none" }}>
         {currentQuestion.options.map((option, index) => (
           <li
             onMouseLeave={() => setHoverIndex(null)}
@@ -53,7 +61,7 @@ const Question: React.FC = () => {
               padding: "10px",
               borderRadius: "10px",
               transition: "0.3s",
-             transform:hoverIndex===index ? "scale(1.05)":"scale(1)"
+              transform: hoverIndex === index ? "scale(1.05)" : "scale(1)",
             }}
           >
             {option}
